@@ -19,10 +19,10 @@ def test_timm_backbone(batch_size, input_shape):
     model = TimmBackbone(model_name="repvit_m1", pretrained=True)
     model.to(DEVICE)
 
-    output = model(x)
+    output, _ = model.forward(x)
 
     # Check training output
-    assert output.shape == (batch_size, model.num_classes)
+    assert output.shape == (batch_size, model.model.num_classes)
 
 
 @pytest.mark.parametrize(
@@ -33,7 +33,7 @@ def test_timm_backbone_features(batch_size, input_shape):
     x = torch.rand(batch_size, 3, *input_shape.tolist(), device=DEVICE)
 
     model = TimmBackbone(
-        model_name="repvit_m1", pretrained=True, features_only=True, out_indicies=(1, 2, 3, 4)
+        model_name="repvit_m1", pretrained=True, features_only=True,
     )
     model.to(DEVICE)
 
